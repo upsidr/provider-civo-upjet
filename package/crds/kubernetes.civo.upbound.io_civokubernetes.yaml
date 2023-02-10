@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: resources.null.template.upbound.io
+  name: civokubernetes.kubernetes.civo.upbound.io
 spec:
-  group: null.template.upbound.io
+  group: kubernetes.civo.upbound.io
   names:
     categories:
     - crossplane
     - managed
-    - template
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    - civo
+    kind: CivoKubernetes
+    listKind: CivoKubernetesList
+    plural: civokubernetes
+    singular: civokubernetes
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. <no value>
+        description: CivoKubernetes is the Schema for the CivoKubernetess API. <no
+          value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: CivoKubernetesSpec defines the desired state of CivoKubernetes
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,13 +64,68 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  applications:
+                    description: 'Comma separated list of applications to install.
+                      Spaces within application names are fine, but shouldn''t be
+                      either side of the comma. Application names are case-sensitive;
+                      the available applications can be listed with the Civo CLI:
+                      ''civo kubernetes applications ls''. If you want to remove a
+                      default installed application, prefix it with a ''-'', e.g.
+                      -Traefik. For application that supports plans, you can use ''app_name:app_plan''
+                      format e.g. ''Linkerd:Linkerd & Jaeger'' or ''MariaDB:5GB''.'
+                    type: string
+                  cni:
+                    description: The cni for the k3s to install (the default is `flannel`)
+                      valid options are `cilium` or `flannel`
+                    type: string
+                  firewallId:
+                    description: The existing firewall ID to use for this cluster
+                    type: string
+                  kubernetesVersion:
+                    description: The version of k3s to install (optional, the default
+                      is currently the latest available)
+                    type: string
+                  networkId:
+                    description: The network for the cluster, if not declare we use
+                      the default one
+                    type: string
+                  numTargetNodes:
+                    description: The number of instances to create (optional, the
+                      default at the time of writing is 3)
+                    type: number
+                  pools:
+                    items:
+                      properties:
+                        label:
+                          description: Node pool label, if you don't provide one,
+                            we will generate one for you
+                          type: string
+                        nodeCount:
+                          description: Number of nodes in the nodepool
+                          type: number
+                        size:
+                          description: Size of the nodes in the nodepool
+                          type: string
+                      required:
+                      - nodeCount
+                      - size
+                      type: object
+                    type: array
+                  region:
+                    description: The region for the cluster, if not declare we use
+                      the region in declared in the provider
+                    type: string
+                  tags:
+                    description: Space separated list of tags, to be used freely as
+                      required
+                    type: string
+                  targetNodesSize:
+                    description: The size of each node (optional, the default is currently
+                      g4s.kube.medium)
+                    type: string
+                required:
+                - firewallId
+                - pools
                 type: object
               providerConfigRef:
                 default:
@@ -243,11 +299,52 @@ spec:
             - forProvider
             type: object
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: CivoKubernetesStatus defines the observed state of CivoKubernetes.
             properties:
               atProvider:
                 properties:
+                  apiEndpoint:
+                    description: The API server endpoint of the cluster
+                    type: string
+                  createdAt:
+                    description: The timestamp when the cluster was created
+                    type: string
+                  dnsEntry:
+                    description: The DNS name of the cluster
+                    type: string
                   id:
+                    type: string
+                  installedApplications:
+                    items:
+                      properties:
+                        application:
+                          type: string
+                        category:
+                          type: string
+                        installed:
+                          type: boolean
+                        version:
+                          type: string
+                      type: object
+                    type: array
+                  masterIp:
+                    description: The IP address of the master node
+                    type: string
+                  pools:
+                    items:
+                      properties:
+                        instanceNames:
+                          description: Instance names in the nodepool
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  ready:
+                    description: When cluster is ready, this will return `true`
+                    type: boolean
+                  status:
+                    description: Status of the cluster
                     type: string
                 type: object
               conditions:

@@ -9,13 +9,12 @@ import (
 	_ "embed"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
-
-	"github.com/upbound/upjet-provider-template/config/null"
+	kubernetes_cluster "github.com/upsidr/provider-civo/config/kubernetes_cluster"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "civo"
+	modulePath     = "github.com/upsidr/provider-civo"
 )
 
 //go:embed schema.json
@@ -34,7 +33,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		kubernetes_cluster.Configure,
 	} {
 		configure(pc)
 	}

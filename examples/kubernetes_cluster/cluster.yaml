@@ -1,0 +1,16 @@
+kind: CivoKubernetes
+apiVersion: kubernetes.civo.upbound.io/v1alpha1
+metadata:
+  name: tf-cluster
+spec:
+  forProvider:
+    firewallId: "default-default"
+    region: "fra1"
+    pools:
+      - label: "node-pool"
+        nodeCount: 2
+        size: g3.k3s.small
+    applications: "kubernetes-dashboard"
+    kubernetesVersion: "1.23.6-k3s1"
+  providerConfigRef:
+    name: civo-provider

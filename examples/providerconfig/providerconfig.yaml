@@ -1,11 +1,11 @@
-apiVersion: template.upbound.io/v1beta1
+apiVersion: civo.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
-  name: default
+  name: civo-provider
 spec:
   credentials:
     source: Secret
     secretRef:
-      name: example-creds
+      name: civo-creds
       namespace: crossplane-system
       key: credentials
