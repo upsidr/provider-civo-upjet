@@ -1,14 +1,17 @@
-kind: CivoKubernetes
-apiVersion: kubernetes.civo.upbound.io/v1alpha1
+apiVersion: civo.upbound.io/v1alpha1
+kind: KubernetesCluster
 metadata:
-  name: tf-cluster
+  name: jet-cluster
 spec:
   forProvider:
-    firewallId: "default-default"
-    region: "fra1"
+    name: jet-cluster
+    firewallIdRef:
+      name: k8s-firewall
+    networkIdRef:
+      name: tf-net
     pools:
       - label: "node-pool"
-        nodeCount: 2
+        nodeCount: 1
         size: g3.k3s.small
     applications: "kubernetes-dashboard"
     kubernetesVersion: "1.23.6-k3s1"

@@ -1,0 +1,9 @@
+apiVersion: civo.upbound.io/v1alpha1
+kind: Network
+metadata:
+  name: tf-net
+spec:
+  forProvider:
+    label: tf-net
+  providerConfigRef:
+    name: civo-provider
