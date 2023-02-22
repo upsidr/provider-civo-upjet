@@ -33,7 +33,7 @@ Notice that in this example Provider resource is referencing ControllerConfig wi
 
 You can see the API reference [here](https://doc.crds.dev/github.com/upsidr/provider-civo-upjet).
 
-## Developing
+## Running local provider
 
 This was generated using the [Upjet docs](https://github.com/upbound/upjet/blob/main/docs/generating-a-provider.md).
 
@@ -60,6 +60,10 @@ Now run the provider locally against a Kubernetes cluster:
 ```console
 make run
 ```
+
+> **Ready!** Take a look at the `examples/` directory and apply some resources.
+
+## Developing
 
 Generate code and CRDs:
 
