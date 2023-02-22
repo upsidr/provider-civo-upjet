@@ -51,7 +51,6 @@ kubectl create namespace crossplane-system --dry-run=client -o yaml | kubectl ap
 
 kubectl apply -f package/crds
 
-kubectl apply -f examples/install.yaml
 kubectl apply -f examples/providerconfig/secret.yaml
 kubectl apply -f examples/providerconfig/providerconfig.yaml
 ```
