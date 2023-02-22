@@ -19,11 +19,10 @@ import (
 
 const (
 	// error messages
-	errNoProviderConfig     = "no providerConfigRef provided"
-	errGetProviderConfig    = "cannot get referenced ProviderConfig"
-	errTrackUsage           = "cannot track ProviderConfig usage"
-	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal civo credentials as JSON"
+	errNoProviderConfig   = "no providerConfigRef provided"
+	errGetProviderConfig  = "cannot get referenced ProviderConfig"
+	errTrackUsage         = "cannot track ProviderConfig usage"
+	errExtractCredentials = "cannot extract credentials"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -56,10 +55,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if err != nil {
 			return ps, errors.Wrap(err, errExtractCredentials)
 		}
-		// creds := map[string]string{}
-		// if err := json.Unmarshal(data, &creds); err != nil {
-		// 	return ps, errors.Wrap(err, errUnmarshalCredentials)
-		// }
 
 		// Set credentials in Terraform provider configuration.
 		ps.Configuration = map[string]any{

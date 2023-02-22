@@ -10,7 +10,7 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 	"github.com/upsidr/provider-civo-upjet/config/firewall"
-	"github.com/upsidr/provider-civo-upjet/config/kubernetes_cluster"
+	"github.com/upsidr/provider-civo-upjet/config/kubernetes"
 	"github.com/upsidr/provider-civo-upjet/config/network"
 )
 
@@ -35,7 +35,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		kubernetes_cluster.Configure,
+		kubernetes.ConfigureCluster,
 		firewall.Configure,
 		network.Configure,
 	} {
