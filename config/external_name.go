@@ -9,8 +9,9 @@ import "github.com/upbound/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"civo_kubernetes_cluster": config.NameAsIdentifier,
+	"civo_kubernetes_cluster": config.IdentifierFromProvider,
+	"civo_firewall":           config.IdentifierFromProvider,
+	"civo_network":            config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

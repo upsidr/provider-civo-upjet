@@ -36,6 +36,8 @@ func GetProvider() *ujconfig.Provider {
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
 		kubernetes_cluster.Configure,
+		firewall.Configure,
+		network.Configure,
 	} {
 		configure(pc)
 	}
