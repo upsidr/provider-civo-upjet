@@ -13,7 +13,20 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type CivoKubernetesObservation struct {
+type InstalledApplicationsObservation struct {
+	Application *string `json:"application,omitempty" tf:"application,omitempty"`
+
+	Category *string `json:"category,omitempty" tf:"category,omitempty"`
+
+	Installed *bool `json:"installed,omitempty" tf:"installed,omitempty"`
+
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+}
+
+type InstalledApplicationsParameters struct {
+}
+
+type KubernetesClusterObservation struct {
 
 	// The API server endpoint of the cluster
 	APIEndpoint *string `json:"apiEndpoint,omitempty" tf:"api_endpoint,omitempty"`
@@ -41,7 +54,7 @@ type CivoKubernetesObservation struct {
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
-type CivoKubernetesParameters struct {
+type KubernetesClusterParameters struct {
 
 	// Comma separated list of applications to install. Spaces within application names are fine, but shouldn't be either side of the comma. Application names are case-sensitive; the available applications can be listed with the Civo CLI: 'civo kubernetes applications ls'. If you want to remove a default installed application, prefix it with a '-', e.g. -Traefik. For application that supports plans, you can use 'app_name:app_plan' format e.g. 'Linkerd:Linkerd & Jaeger' or 'MariaDB:5GB'.
 	// +kubebuilder:validation:Optional
@@ -52,16 +65,38 @@ type CivoKubernetesParameters struct {
 	Cni *string `json:"cni,omitempty" tf:"cni,omitempty"`
 
 	// The existing firewall ID to use for this cluster
-	// +kubebuilder:validation:Required
-	FirewallID *string `json:"firewallId" tf:"firewall_id,omitempty"`
+	// +crossplane:generate:reference:type=github.com/upsidr/provider-civo-upjet/apis/civo/v1alpha1.Firewall
+	// +kubebuilder:validation:Optional
+	FirewallID *string `json:"firewallId,omitempty" tf:"firewall_id,omitempty"`
+
+	// Reference to a Firewall in civo to populate firewallId.
+	// +kubebuilder:validation:Optional
+	FirewallIDRef *v1.Reference `json:"firewallIdRef,omitempty" tf:"-"`
+
+	// Selector for a Firewall in civo to populate firewallId.
+	// +kubebuilder:validation:Optional
+	FirewallIDSelector *v1.Selector `json:"firewallIdSelector,omitempty" tf:"-"`
 
 	// The version of k3s to install (optional, the default is currently the latest available)
 	// +kubebuilder:validation:Optional
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty" tf:"kubernetes_version,omitempty"`
 
+	// Name for your cluster, must be unique within your account
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// The network for the cluster, if not declare we use the default one
+	// +crossplane:generate:reference:type=github.com/upsidr/provider-civo-upjet/apis/civo/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// Reference to a Network in civo to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDRef *v1.Reference `json:"networkIdRef,omitempty" tf:"-"`
+
+	// Selector for a Network in civo to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDSelector *v1.Selector `json:"networkIdSelector,omitempty" tf:"-"`
 
 	// The number of instances to create (optional, the default at the time of writing is 3)
 	// +kubebuilder:validation:Optional
@@ -81,19 +116,6 @@ type CivoKubernetesParameters struct {
 	// The size of each node (optional, the default is currently g4s.kube.medium)
 	// +kubebuilder:validation:Optional
 	TargetNodesSize *string `json:"targetNodesSize,omitempty" tf:"target_nodes_size,omitempty"`
-}
-
-type InstalledApplicationsObservation struct {
-	Application *string `json:"application,omitempty" tf:"application,omitempty"`
-
-	Category *string `json:"category,omitempty" tf:"category,omitempty"`
-
-	Installed *bool `json:"installed,omitempty" tf:"installed,omitempty"`
-
-	Version *string `json:"version,omitempty" tf:"version,omitempty"`
-}
-
-type InstalledApplicationsParameters struct {
 }
 
 type PoolsObservation struct {
@@ -117,51 +139,51 @@ type PoolsParameters struct {
 	Size *string `json:"size" tf:"size,omitempty"`
 }
 
-// CivoKubernetesSpec defines the desired state of CivoKubernetes
-type CivoKubernetesSpec struct {
+// KubernetesClusterSpec defines the desired state of KubernetesCluster
+type KubernetesClusterSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     CivoKubernetesParameters `json:"forProvider"`
+	ForProvider     KubernetesClusterParameters `json:"forProvider"`
 }
 
-// CivoKubernetesStatus defines the observed state of CivoKubernetes.
-type CivoKubernetesStatus struct {
+// KubernetesClusterStatus defines the observed state of KubernetesCluster.
+type KubernetesClusterStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        CivoKubernetesObservation `json:"atProvider,omitempty"`
+	AtProvider        KubernetesClusterObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// CivoKubernetes is the Schema for the CivoKubernetess API. <no value>
+// KubernetesCluster is the Schema for the KubernetesClusters API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,civo}
-type CivoKubernetes struct {
+type KubernetesCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              CivoKubernetesSpec   `json:"spec"`
-	Status            CivoKubernetesStatus `json:"status,omitempty"`
+	Spec              KubernetesClusterSpec   `json:"spec"`
+	Status            KubernetesClusterStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// CivoKubernetesList contains a list of CivoKubernetess
-type CivoKubernetesList struct {
+// KubernetesClusterList contains a list of KubernetesClusters
+type KubernetesClusterList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CivoKubernetes `json:"items"`
+	Items           []KubernetesCluster `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	CivoKubernetes_Kind             = "CivoKubernetes"
-	CivoKubernetes_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: CivoKubernetes_Kind}.String()
-	CivoKubernetes_KindAPIVersion   = CivoKubernetes_Kind + "." + CRDGroupVersion.String()
-	CivoKubernetes_GroupVersionKind = CRDGroupVersion.WithKind(CivoKubernetes_Kind)
+	KubernetesCluster_Kind             = "KubernetesCluster"
+	KubernetesCluster_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: KubernetesCluster_Kind}.String()
+	KubernetesCluster_KindAPIVersion   = KubernetesCluster_Kind + "." + CRDGroupVersion.String()
+	KubernetesCluster_GroupVersionKind = CRDGroupVersion.WithKind(KubernetesCluster_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&CivoKubernetes{}, &CivoKubernetesList{})
+	SchemeBuilder.Register(&KubernetesCluster{}, &KubernetesClusterList{})
 }

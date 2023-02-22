@@ -100,6 +100,8 @@ spec:
                 required:
                 - source
                 type: object
+              region:
+                type: string
             required:
             - credentials
             type: object

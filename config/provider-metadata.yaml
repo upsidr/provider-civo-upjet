@@ -1,2 +1,320 @@
 name: civo/civo
-resources: {}
+resources:
+    civo_database Resource - terraform-provider-civo:
+        subCategory: ""
+        name: civo_database Resource - terraform-provider-civo
+        title: civo_database Resource - terraform-provider-civo
+        argumentDocs:
+            create: (String)
+            delete: (String)
+            firewall_id: (String) The ID of the firewall to use, from the current list. If left blank or not sent, the default firewall will be used (open to all)
+            id: (String) The ID of this resource.
+            name: (String) Name of the database
+            network_id: (String) The id of the associated network
+            nodes: (Number) Count of nodes
+            password: (String) The password of the database
+            region: (String) The region where the database will be created.
+            size: (String) Size of the database
+            status: (String) The status of the database
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+            username: (String) The username of the database
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_database.mydb 29fcd1c4-fb61-44c7-b49c-dc7b98e9927e
+    civo_dns_domain_name Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo DNS domain name resource.
+        name: civo_dns_domain_name Resource - terraform-provider-civo
+        title: civo_dns_domain_name Resource - terraform-provider-civo
+        argumentDocs:
+            account_id: (String) The account ID of the domain
+            id: (String) The ID of this resource.
+            name: (String) The name of the domain
+        importStatements:
+            - |-
+              # using domain name
+              terraform import civo_dns_domain_name.main mydomain.com
+    civo_dns_domain_record Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo DNS domain record resource.
+        name: civo_dns_domain_record Resource - terraform-provider-civo
+        title: civo_dns_domain_record Resource - terraform-provider-civo
+        argumentDocs:
+            account_id: (String) The account ID of this resource
+            created_at: (String) Timestamp when this resource was created
+            domain_id: (String) ID from domain name
+            id: (String) The ID of this resource.
+            name: (String) The portion before the domain name (e.g. www) or an @ for the apex/root domain (you cannot use an A record with an amex/root domain)
+            priority: (Number) Useful for MX records only, the priority mail should be attempted it (defaults to 10)
+            ttl: (Number) How long caching DNS servers should cache this record for, in seconds (the minimum is 600 and the default if unspecified is 600)
+            type: (String) The choice of RR type from a, cname, mx or txt
+            updated_at: (String) Timestamp when this resource was updated
+            value: (String) The IP address (A or MX), hostname (CNAME or MX) or text value (TXT) to serve for this record
+        importStatements:
+            - |-
+              # using domain_id:domain_record_id
+              terraform import civo_dns_domain_record.www a3cd6832-9577-4017-afd7-17d239fc0bf0:c9a39d14-ee1b-4870-8fb0-a2d4f465e822
+    civo_firewall Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo firewall resource. This can be used to create, modify, and delete firewalls.
+        name: civo_firewall Resource - terraform-provider-civo
+        title: civo_firewall Resource - terraform-provider-civo
+        argumentDocs:
+            action: (String) The action of the rule can be allow or deny. When we set the action = 'allow', this is going to add a rule to allow traffic. Similarly, setting action = 'deny' will deny the traffic.
+            cidr: (Set of String) The CIDR notation of the other end to affect, or a valid network CIDR (e.g. 0.0.0.0/0 to open for everyone or 1.2.3.4/32 to open just for a specific IP address)
+            create_default_rules: (Boolean) The create rules flag is used to create the default firewall rules, if is not defined will be set to true, and if you set to false you need to define at least one ingress or egress rule
+            egress_rule: (Block Set) The egress rules, this is a list of rules that will be applied to the firewall (see below for nested schema)
+            id: (String) The ID of this resource.
+            ingress_rule: (Block Set) The ingress rules, this is a list of rules that will be applied to the firewall (see below for nested schema)
+            label: (String) A string that will be the displayed name/reference for this rule
+            name: (String) The firewall name
+            network_id: (String) The firewall network, if is not defined we use the default network
+            port_range: (String) The port or port range to open, can be a single port or a range separated by a dash (-), e.g. 80 or 80-443
+            protocol: (String) The protocol choice from tcp, udp or icmp (the default if unspecified is tcp)
+            region: (String) The firewall region, if is not defined we use the global defined in the provider
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_firewall.www b8ecd2ab-2267-4a5e-8692-cbf1d32583e3
+    civo_firewall_rule Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo firewall rule resource. This can be used to create, modify, and delete firewalls rules. This resource don't have an update option because Civo backend doesn't support it at this moment. In that case, we use ForceNew for all object in the resource.
+        name: civo_firewall_rule Resource - terraform-provider-civo
+        title: civo_firewall_rule Resource - terraform-provider-civo
+        argumentDocs:
+            action: (String) The action of the rule can be allow or deny. When we set the action = 'allow', this is going to add a rule to allow traffic. Similarly, setting action = 'deny' will deny the traffic.
+            cidr: (Set of String) The CIDR notation of the other end to affect, or a valid network CIDR (e.g. 0.0.0.0/0 to open for everyone or 1.2.3.4/32 to open just for a specific IP address)
+            direction: (String) The direction of the rule can be ingress or egress
+            end_port: (String) The end of the port range (this is optional, by default it will only apply to the single port listed in start_port)
+            firewall_id: (String) The Firewall ID
+            id: (String) The ID of this resource.
+            label: (String) A string that will be the displayed name/reference for this rule
+            protocol: (String) The protocol choice from tcp, udp or icmp (the default if unspecified is tcp)
+            region: (String) The region for this rule
+            start_port: (String) The start of the port range to configure for this rule (or the single port if required)
+        importStatements:
+            - |-
+              # using firewall_id:firewall_rule_id
+              terraform import civo_firewall_rule.http b8ecd2ab-2267-4a5e-8692-cbf1d32583e3:4b0022ee-00b2-4f81-a40d-b4f8728923a7
+    civo_instance Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo instance resource. This can be used to create, modify, and delete instances.
+        name: civo_instance Resource - terraform-provider-civo
+        title: civo_instance Resource - terraform-provider-civo
+        argumentDocs:
+            cpu_cores: (Number) Instance's CPU cores
+            create: (String)
+            created_at: (String) Timestamp when the instance was created
+            disk_gb: (Number) Instance's disk (GB)
+            disk_image: (String) The ID for the disk image to use to build the instance
+            firewall_id: (String) The ID of the firewall to use, from the current list. If left blank or not sent, the default firewall will be used (open to all)
+            hostname: (String) A fully qualified domain name that should be set as the instance's hostname
+            id: (String) The ID of this resource.
+            initial_password: (String, Sensitive) Initial password for login
+            initial_user: (String) The name of the initial user created on the server (optional; this will default to the template's default_username and fallback to civo)
+            network_id: (String) This must be the ID of the network from the network listing (optional; default network used when not specified)
+            notes: (String) Add some notes to the instance
+            private_ip: (String) Instance's private IP address
+            public_ip: (String) Instance's public IP address
+            public_ip_required: '(String) This should be either ''none'' or ''create'' (default: ''create'')'
+            ram_mb: (Number) Instance's RAM (MB)
+            region: (String) The region for the instance, if not declare we use the region in declared in the provider
+            reverse_dns: (String) A fully qualified domain name that should be used as the instance's IP's reverse DNS (optional, uses the hostname if unspecified)
+            script: (String) The contents of a script that will be uploaded to /usr/local/bin/civo-user-init-script on your instance, read/write/executable only by root and then will be executed at the end of the cloud initialization
+            size: (String) The name of the size, from the current list, e.g. g3.xsmall
+            source_id: (String) Instance's source ID
+            source_type: (String) Instance's source type
+            sshkey_id: (String) The ID of an already uploaded SSH public key to use for login to the default user (optional; if one isn't provided a random password will be set and returned in the initial_password field)
+            status: (String) Instance's status
+            tags: (Set of String) An optional list of tags, represented as a key, value pair
+            template: (String, Deprecated) The ID for the template to use to build the instance
+            timeouts: (Block, Optional) (see below for nested schema)
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_instance.myintance 18bd98ad-1b6e-4f87-b48f-e690b4fd7413
+    civo_instance_reserved_ip_assignment Resource - terraform-provider-civo:
+        subCategory: ""
+        description: The instance reserved ip assignment resource schema definition
+        name: civo_instance_reserved_ip_assignment Resource - terraform-provider-civo
+        title: civo_instance_reserved_ip_assignment Resource - terraform-provider-civo
+        argumentDocs:
+            create: (String)
+            id: (String) The ID of this resource.
+            instance_id: (String) The instance id
+            region: (String) The region of the ip
+            reserved_ip_id: (String) The reserved ip id
+            timeouts: (Block, Optional) (see below for nested schema)
+        importStatements: []
+    civo_kubernetes_cluster Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo Kubernetes cluster resource. This can be used to create, delete, and modify clusters.
+        name: civo_kubernetes_cluster Resource - terraform-provider-civo
+        title: civo_kubernetes_cluster Resource - terraform-provider-civo
+        argumentDocs:
+            api_endpoint: (String) The API server endpoint of the cluster
+            application: (String)
+            applications: '(String) Comma separated list of applications to install. Spaces within application names are fine, but shouldn''t be either side of the comma. Application names are case-sensitive; the available applications can be listed with the Civo CLI: ''civo kubernetes applications ls''. If you want to remove a default installed application, prefix it with a ''-'', e.g. -Traefik. For application that supports plans, you can use ''app_name:app_plan'' format e.g. ''Linkerd:Linkerd & Jaeger'' or ''MariaDB:5GB''.'
+            category: (String)
+            cni: (String) The cni for the k3s to install (the default is flannel) valid options are cilium or flannel
+            create: (String)
+            created_at: (String) The timestamp when the cluster was created
+            delete: (String)
+            dns_entry: (String) The DNS name of the cluster
+            firewall_id: (String) The existing firewall ID to use for this cluster
+            id: (String) The ID of this resource.
+            installed: (Boolean)
+            installed_applications: (List of Object) (see below for nested schema)
+            instance_names: (List of String) Instance names in the nodepool
+            kubeconfig: (String, Sensitive) The kubeconfig of the cluster
+            kubernetes_version: (String) The version of k3s to install (optional, the default is currently the latest available)
+            label: (String) Node pool label, if you don't provide one, we will generate one for you
+            master_ip: (String) The IP address of the master node
+            name: (String) Name for your cluster, must be unique within your account
+            network_id: (String) The network for the cluster, if not declare we use the default one
+            node_count: (Number) Number of nodes in the nodepool
+            num_target_nodes: (Number, Deprecated) The number of instances to create (optional, the default at the time of writing is 3)
+            pools: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            ready: (Boolean) When cluster is ready, this will return true
+            region: (String) The region for the cluster, if not declare we use the region in declared in the provider
+            size: (String) Size of the nodes in the nodepool
+            status: (String) Status of the cluster
+            tags: (String) Space separated list of tags, to be used freely as required
+            target_nodes_size: (String, Deprecated) The size of each node (optional, the default is currently g4s.kube.medium)
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+            version: (String)
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_kubernetes_cluster.my-cluster 1b8b2100-0e9f-4e8f-ad78-9eb578c2a0af
+    civo_kubernetes_node_pool Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo Kubernetes node pool resource. While the default node pool must be defined in the civo_kubernetes_cluster resource, this resource can be used to add additional ones to a cluster.
+        name: civo_kubernetes_node_pool Resource - terraform-provider-civo
+        title: civo_kubernetes_node_pool Resource - terraform-provider-civo
+        argumentDocs:
+            cluster_id: (String) The ID of your cluster
+            create: (String)
+            delete: (String)
+            id: (String) The ID of this resource.
+            instance_names: (List of String) Instance names in the nodepool
+            label: (String) Node pool label, if you don't provide one, we will generate one for you
+            node_count: (Number) the number of instances to create (optional, the default at the time of writing is 3)
+            num_target_nodes: (Number, Deprecated) the number of instances to create (optional, the default at the time of writing is 3)
+            region: (String) The region of the node pool, has to match that of the cluster
+            size: (String) the size of each node (optional, the default is currently g4s.kube.medium)
+            target_nodes_size: (String, Deprecated) the size of each node (optional, the default is currently g4s.kube.medium)
+            timeouts: (Block, Optional) (see below for nested schema)
+            update: (String)
+        importStatements:
+            - |-
+              # using cluster_id:node_pool_id
+              terraform import civo_kubernetes_node_pool.my-pool 1b8b2100-0e9f-4e8f-ad78-9eb578c2a0af:502c1130-cb9b-4a88-b6d2-307bd96d946a
+    civo_network Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo network resource. This can be used to create, modify, and delete networks.
+        name: civo_network Resource - terraform-provider-civo
+        title: civo_network Resource - terraform-provider-civo
+        argumentDocs:
+            default: (Boolean) If the network is default, this will be true
+            id: (String) The ID of this resource.
+            label: (String) Name for the network
+            name: (String) The name of the network
+            region: (String) The region of the network
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_network.custom_net b8ecd2ab-2267-4a5e-8692-cbf1d32583e3
+    civo_object_store Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides an Object Store resource. This can be used to create, modify, and delete object stores.
+        name: civo_object_store Resource - terraform-provider-civo
+        title: civo_object_store Resource - terraform-provider-civo
+        argumentDocs:
+            access_key_id: (String) The access key ID from the Object Store credential. If this is not set, a new credential will be created.
+            bucket_url: (String) The endpoint of the Object Store. It is generated by the provider.
+            create: (String)
+            id: (String) The ID of this resource.
+            max_size_gb: (Number) The maximum size of the Object Store. Default is 500GB.
+            name: (String) The name of the Object Store. Must be unique.
+            region: (String) The region for the Object Store, if not declared we use the region as declared in the provider (Defaults to LON1)
+            status: (String) The status of the Object Store.
+            timeouts: (Block, Optional) (see below for nested schema)
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_object_store.custom_object b8ecd2ab-2267-4a5e-8692-cbf1d32583e3
+    civo_object_store_credential Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides an Object Store Credential resource. This can be used to create, modify, and delete object stores credential.
+        name: civo_object_store_credential Resource - terraform-provider-civo
+        title: civo_object_store_credential Resource - terraform-provider-civo
+        argumentDocs:
+            access_key_id: (String) The access key id of the Object Store Credential. It is generated by the provider.
+            create: (String)
+            id: (String) The ID of this resource.
+            name: (String) The name of the Object Store Credential. Must be unique.
+            region: (String) The region where the Object Store Credential will be created.
+            secret_access_key: (String) The secret access key of the Object Store Credential. It is generated by the provider.
+            status: (String) The status of the Object Store Credential.
+            timeouts: (Block, Optional) (see below for nested schema)
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_object_store.custom_object b8ecd2ab-2267-4a5e-8692-cbf1d32583e3
+    civo_reserved_ip Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo reserved IP to represent a publicly-accessible static IP addresses that can be mapped to one of your Instancesor Load Balancer.
+        name: civo_reserved_ip Resource - terraform-provider-civo
+        title: civo_reserved_ip Resource - terraform-provider-civo
+        argumentDocs:
+            id: (String) The ID of this resource.
+            ip: (String) The IP Address of the resource
+            name: (String) Name for the ip address
+            region: (String) The region of the ip
+        importStatements:
+            - terrafom import civo_reserved_ip.www 9f0e86fc-b2c6-46b4-82ed-2f28419f8ae3
+    civo_ssh_key Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo SSH key resource to allow you to manage SSH keys for instance access. Keys created with this resource can be referenced in your instance configuration via their ID.
+        name: civo_ssh_key Resource - terraform-provider-civo
+        title: civo_ssh_key Resource - terraform-provider-civo
+        argumentDocs:
+            fingerprint: (String) a string containing the SSH finger print.
+            id: (String) The ID of this resource.
+            name: (String) a string that will be the reference for the SSH key.
+            public_key: (String) a string containing the SSH public key.
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_ssh_key.mykey 87ca2ee4-57d3-4420-b9b6-411b0b4b2a0e
+    civo_volume Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Provides a Civo volume which can be attached to an instance in order to provide expanded storage.
+        name: civo_volume Resource - terraform-provider-civo
+        title: civo_volume Resource - terraform-provider-civo
+        argumentDocs:
+            id: (String) The ID of this resource.
+            mount_point: (String) The mount point of the volume (from instance's perspective)
+            name: (String) A name that you wish to use to refer to this volume
+            network_id: (String) The network that the volume belongs to
+            region: (String) The region for the volume, if not declare we use the region in declared in the provider.
+            size_gb: (Number) A minimum of 1 and a maximum of your available disk space from your quota specifies the size of the volume in gigabytes
+        importStatements:
+            - |-
+              # using ID
+              terraform import civo_volume.db 506f78a4-e098-11e5-ad9f-000f53306ae1
+    civo_volume_attachment Resource - terraform-provider-civo:
+        subCategory: ""
+        description: Manages volume attachment/detachment to an instance.
+        name: civo_volume_attachment Resource - terraform-provider-civo
+        title: civo_volume_attachment Resource - terraform-provider-civo
+        argumentDocs:
+            id: (String) The ID of this resource.
+            instance_id: (String) The ID of target instance for attachment
+            region: (String) The region for the volume attachment
+            volume_id: (String) The ID of target volume for attachment
+        importStatements: []

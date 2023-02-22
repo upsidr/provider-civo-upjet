@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: civokubernetes.kubernetes.civo.upbound.io
+  name: firewalls.civo.upbound.io
 spec:
-  group: kubernetes.civo.upbound.io
+  group: civo.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - civo
-    kind: CivoKubernetes
-    listKind: CivoKubernetesList
-    plural: civokubernetes
-    singular: civokubernetes
+    kind: Firewall
+    listKind: FirewallList
+    plural: firewalls
+    singular: firewall
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: CivoKubernetes is the Schema for the CivoKubernetess API. <no
-          value>
+        description: Firewall is the Schema for the Firewalls API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: CivoKubernetesSpec defines the desired state of CivoKubernetes
+            description: FirewallSpec defines the desired state of Firewall
             properties:
               deletionPolicy:
                 default: Delete
@@ -64,68 +63,170 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  applications:
-                    description: 'Comma separated list of applications to install.
-                      Spaces within application names are fine, but shouldn''t be
-                      either side of the comma. Application names are case-sensitive;
-                      the available applications can be listed with the Civo CLI:
-                      ''civo kubernetes applications ls''. If you want to remove a
-                      default installed application, prefix it with a ''-'', e.g.
-                      -Traefik. For application that supports plans, you can use ''app_name:app_plan''
-                      format e.g. ''Linkerd:Linkerd & Jaeger'' or ''MariaDB:5GB''.'
-                    type: string
-                  cni:
-                    description: The cni for the k3s to install (the default is `flannel`)
-                      valid options are `cilium` or `flannel`
-                    type: string
-                  firewallId:
-                    description: The existing firewall ID to use for this cluster
-                    type: string
-                  kubernetesVersion:
-                    description: The version of k3s to install (optional, the default
-                      is currently the latest available)
-                    type: string
-                  networkId:
-                    description: The network for the cluster, if not declare we use
-                      the default one
-                    type: string
-                  numTargetNodes:
-                    description: The number of instances to create (optional, the
-                      default at the time of writing is 3)
-                    type: number
-                  pools:
+                  createDefaultRules:
+                    description: The create rules flag is used to create the default
+                      firewall rules, if is not defined will be set to true, and if
+                      you set to false you need to define at least one ingress or
+                      egress rule
+                    type: boolean
+                  egressRule:
+                    description: The egress rules, this is a list of rules that will
+                      be applied to the firewall
                     items:
                       properties:
-                        label:
-                          description: Node pool label, if you don't provide one,
-                            we will generate one for you
+                        action:
+                          description: The action of the rule can be allow or deny.
+                            When we set the `action = 'allow'`, this is going to add
+                            a rule to allow traffic. Similarly, setting `action =
+                            'deny'` will deny the traffic.
                           type: string
-                        nodeCount:
-                          description: Number of nodes in the nodepool
-                          type: number
-                        size:
-                          description: Size of the nodes in the nodepool
+                        cidr:
+                          description: The CIDR notation of the other end to affect,
+                            or a valid network CIDR (e.g. 0.0.0.0/0 to open for everyone
+                            or 1.2.3.4/32 to open just for a specific IP address)
+                          items:
+                            type: string
+                          type: array
+                        label:
+                          description: A string that will be the displayed name/reference
+                            for this rule
+                          type: string
+                        portRange:
+                          description: The port or port range to open, can be a single
+                            port or a range separated by a dash (`-`), e.g. `80` or
+                            `80-443`
+                          type: string
+                        protocol:
+                          description: The protocol choice from `tcp`, `udp` or `icmp`
+                            (the default if unspecified is `tcp`)
                           type: string
                       required:
-                      - nodeCount
-                      - size
+                      - action
+                      - cidr
                       type: object
                     type: array
+                  ingressRule:
+                    description: The ingress rules, this is a list of rules that will
+                      be applied to the firewall
+                    items:
+                      properties:
+                        action:
+                          description: The action of the rule can be allow or deny.
+                            When we set the `action = 'allow'`, this is going to add
+                            a rule to allow traffic. Similarly, setting `action =
+                            'deny'` will deny the traffic.
+                          type: string
+                        cidr:
+                          description: The CIDR notation of the other end to affect,
+                            or a valid network CIDR (e.g. 0.0.0.0/0 to open for everyone
+                            or 1.2.3.4/32 to open just for a specific IP address)
+                          items:
+                            type: string
+                          type: array
+                        label:
+                          description: A string that will be the displayed name/reference
+                            for this rule
+                          type: string
+                        portRange:
+                          description: The port or port range to open, can be a single
+                            port or a range separated by a dash (`-`), e.g. `80` or
+                            `80-443`
+                          type: string
+                        protocol:
+                          description: The protocol choice from `tcp`, `udp` or `icmp`
+                            (the default if unspecified is `tcp`)
+                          type: string
+                      required:
+                      - action
+                      - cidr
+                      type: object
+                    type: array
+                  name:
+                    description: The firewall name
+                    type: string
+                  networkId:
+                    description: The firewall network, if is not defined we use the
+                      default network
+                    type: string
+                  networkIdRef:
+                    description: Reference to a Network in civo to populate networkId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  networkIdSelector:
+                    description: Selector for a Network in civo to populate networkId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                   region:
-                    description: The region for the cluster, if not declare we use
-                      the region in declared in the provider
-                    type: string
-                  tags:
-                    description: Space separated list of tags, to be used freely as
-                      required
-                    type: string
-                  targetNodesSize:
-                    description: The size of each node (optional, the default is currently
-                      g4s.kube.medium)
+                    description: The firewall region, if is not defined we use the
+                      global defined in the provider
                     type: string
                 required:
-                - firewallId
-                - pools
+                - name
                 type: object
               providerConfigRef:
                 default:
@@ -299,53 +400,32 @@ spec:
             - forProvider
             type: object
           status:
-            description: CivoKubernetesStatus defines the observed state of CivoKubernetes.
+            description: FirewallStatus defines the observed state of Firewall.
             properties:
               atProvider:
                 properties:
-                  apiEndpoint:
-                    description: The API server endpoint of the cluster
-                    type: string
-                  createdAt:
-                    description: The timestamp when the cluster was created
-                    type: string
-                  dnsEntry:
-                    description: The DNS name of the cluster
-                    type: string
+                  egressRule:
+                    description: The egress rules, this is a list of rules that will
+                      be applied to the firewall
+                    items:
+                      properties:
+                        id:
+                          description: The ID of the firewall rule.
+                          type: string
+                      type: object
+                    type: array
                   id:
                     type: string
-                  installedApplications:
+                  ingressRule:
+                    description: The ingress rules, this is a list of rules that will
+                      be applied to the firewall
                     items:
                       properties:
-                        application:
-                          type: string
-                        category:
-                          type: string
-                        installed:
-                          type: boolean
-                        version:
+                        id:
+                          description: The ID of the firewall rule.
                           type: string
                       type: object
                     type: array
-                  masterIp:
-                    description: The IP address of the master node
-                    type: string
-                  pools:
-                    items:
-                      properties:
-                        instanceNames:
-                          description: Instance names in the nodepool
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
-                  ready:
-                    description: When cluster is ready, this will return `true`
-                    type: boolean
-                  status:
-                    description: Status of the cluster
-                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.
