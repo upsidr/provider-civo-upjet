@@ -60,4 +60,4 @@ make build
 ## Report a Bug
 
 For filing bugs, suggesting improvements, or requesting new features, please
-open an [issue](https://github.com/upsidr/provider-civo/issues).
+open an [issue](https://github.com/upsidr/provider-civo-upjet/issues).

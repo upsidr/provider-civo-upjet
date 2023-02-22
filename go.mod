@@ -1,4 +1,4 @@
-module github.com/upsidr/provider-civo
+module github.com/upsidr/provider-civo-upjet
 
 go 1.19
 

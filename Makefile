@@ -1,7 +1,7 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME := provider-civo
+PROJECT_NAME := provider-civo-upjet
 PROJECT_REPO := github.com/upsidr/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION := 1.3.3
@@ -73,7 +73,7 @@ XPKGS = $(PROJECT_NAME)
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.provider-civo: do.build.images
+xpkg.build.provider-civo-upjet: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.

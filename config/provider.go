@@ -9,12 +9,14 @@ import (
 	_ "embed"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
-	kubernetes_cluster "github.com/upsidr/provider-civo/config/kubernetes_cluster"
+	"github.com/upsidr/provider-civo-upjet/config/firewall"
+	"github.com/upsidr/provider-civo-upjet/config/kubernetes_cluster"
+	"github.com/upsidr/provider-civo-upjet/config/network"
 )
 
 const (
 	resourcePrefix = "civo"
-	modulePath     = "github.com/upsidr/provider-civo"
+	modulePath     = "github.com/upsidr/provider-civo-upjet"
 )
 
 //go:embed schema.json

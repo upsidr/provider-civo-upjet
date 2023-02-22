@@ -14,7 +14,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/terraform"
 
-	"github.com/upsidr/provider-civo/apis/v1beta1"
+	"github.com/upsidr/provider-civo-upjet/apis/v1beta1"
 )
 
 const (
@@ -63,8 +63,8 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		// Set credentials in Terraform provider configuration.
 		ps.Configuration = map[string]any{
-			"region": "fra1",
-			"token":  data,
+			"region": pc.Spec.Region,
+			"token":  string(data),
 		}
 		return ps, nil
 	}

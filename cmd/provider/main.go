@@ -24,12 +24,12 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/upsidr/provider-civo/apis"
-	"github.com/upsidr/provider-civo/apis/v1alpha1"
-	"github.com/upsidr/provider-civo/config"
-	"github.com/upsidr/provider-civo/internal/clients"
-	"github.com/upsidr/provider-civo/internal/controller"
-	"github.com/upsidr/provider-civo/internal/features"
+	"github.com/upsidr/provider-civo-upjet/apis"
+	"github.com/upsidr/provider-civo-upjet/apis/v1alpha1"
+	"github.com/upsidr/provider-civo-upjet/config"
+	"github.com/upsidr/provider-civo-upjet/internal/clients"
+	"github.com/upsidr/provider-civo-upjet/internal/controller"
+	"github.com/upsidr/provider-civo-upjet/internal/features"
 )
 
 func main() {

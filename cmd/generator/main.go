@@ -11,7 +11,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/pipeline"
 
-	"github.com/upsidr/provider-civo/config"
+	"github.com/upsidr/provider-civo-upjet/config"
 )
 
 func main() {
