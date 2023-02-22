@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-civo
 spec:
-  package: upsidr/provider-civo:v0.1.0
+  package: upsidr/provider-civo-upjet:v0.1.0
