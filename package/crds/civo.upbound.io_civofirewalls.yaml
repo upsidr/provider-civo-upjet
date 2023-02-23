@@ -5,7 +5,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: networks.civo.upbound.io
+  name: civofirewalls.civo.upbound.io
 spec:
   group: civo.upbound.io
   names:
@@ -13,10 +13,10 @@ spec:
     - crossplane
     - managed
     - civo
-    kind: Network
-    listKind: NetworkList
-    plural: networks
-    singular: network
+    kind: CivoFirewall
+    listKind: CivoFirewallList
+    plural: civofirewalls
+    singular: civofirewall
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Network is the Schema for the Networks API. <no value>
+        description: CivoFirewall is the Schema for the CivoFirewalls API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkSpec defines the desired state of Network
+            description: CivoFirewallSpec defines the desired state of CivoFirewall
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,14 +63,170 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  label:
-                    description: Name for the network
+                  createDefaultRules:
+                    description: The create rules flag is used to create the default
+                      firewall rules, if is not defined will be set to true, and if
+                      you set to false you need to define at least one ingress or
+                      egress rule
+                    type: boolean
+                  egressRule:
+                    description: The egress rules, this is a list of rules that will
+                      be applied to the firewall
+                    items:
+                      properties:
+                        action:
+                          description: The action of the rule can be allow or deny.
+                            When we set the `action = 'allow'`, this is going to add
+                            a rule to allow traffic. Similarly, setting `action =
+                            'deny'` will deny the traffic.
+                          type: string
+                        cidr:
+                          description: The CIDR notation of the other end to affect,
+                            or a valid network CIDR (e.g. 0.0.0.0/0 to open for everyone
+                            or 1.2.3.4/32 to open just for a specific IP address)
+                          items:
+                            type: string
+                          type: array
+                        label:
+                          description: A string that will be the displayed name/reference
+                            for this rule
+                          type: string
+                        portRange:
+                          description: The port or port range to open, can be a single
+                            port or a range separated by a dash (`-`), e.g. `80` or
+                            `80-443`
+                          type: string
+                        protocol:
+                          description: The protocol choice from `tcp`, `udp` or `icmp`
+                            (the default if unspecified is `tcp`)
+                          type: string
+                      required:
+                      - action
+                      - cidr
+                      type: object
+                    type: array
+                  ingressRule:
+                    description: The ingress rules, this is a list of rules that will
+                      be applied to the firewall
+                    items:
+                      properties:
+                        action:
+                          description: The action of the rule can be allow or deny.
+                            When we set the `action = 'allow'`, this is going to add
+                            a rule to allow traffic. Similarly, setting `action =
+                            'deny'` will deny the traffic.
+                          type: string
+                        cidr:
+                          description: The CIDR notation of the other end to affect,
+                            or a valid network CIDR (e.g. 0.0.0.0/0 to open for everyone
+                            or 1.2.3.4/32 to open just for a specific IP address)
+                          items:
+                            type: string
+                          type: array
+                        label:
+                          description: A string that will be the displayed name/reference
+                            for this rule
+                          type: string
+                        portRange:
+                          description: The port or port range to open, can be a single
+                            port or a range separated by a dash (`-`), e.g. `80` or
+                            `80-443`
+                          type: string
+                        protocol:
+                          description: The protocol choice from `tcp`, `udp` or `icmp`
+                            (the default if unspecified is `tcp`)
+                          type: string
+                      required:
+                      - action
+                      - cidr
+                      type: object
+                    type: array
+                  name:
+                    description: The firewall name
                     type: string
+                  networkId:
+                    description: The firewall network, if is not defined we use the
+                      default network
+                    type: string
+                  networkIdRef:
+                    description: Reference to a CivoNetwork in civo to populate networkId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  networkIdSelector:
+                    description: Selector for a CivoNetwork in civo to populate networkId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                   region:
-                    description: The region of the network
+                    description: The firewall region, if is not defined we use the
+                      global defined in the provider
                     type: string
                 required:
-                - label
+                - name
                 type: object
               providerConfigRef:
                 default:
@@ -244,18 +400,32 @@ spec:
             - forProvider
             type: object
           status:
-            description: NetworkStatus defines the observed state of Network.
+            description: CivoFirewallStatus defines the observed state of CivoFirewall.
             properties:
               atProvider:
                 properties:
-                  default:
-                    description: If the network is default, this will be `true`
-                    type: boolean
+                  egressRule:
+                    description: The egress rules, this is a list of rules that will
+                      be applied to the firewall
+                    items:
+                      properties:
+                        id:
+                          description: The ID of the firewall rule.
+                          type: string
+                      type: object
+                    type: array
                   id:
                     type: string
-                  name:
-                    description: The name of the network
-                    type: string
+                  ingressRule:
+                    description: The ingress rules, this is a list of rules that will
+                      be applied to the firewall
+                    items:
+                      properties:
+                        id:
+                          description: The ID of the firewall rule.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

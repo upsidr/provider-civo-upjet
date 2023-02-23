@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type NetworkObservation struct {
+type CivoNetworkObservation struct {
 
 	// If the network is default, this will be `true`
 	Default *bool `json:"default,omitempty" tf:"default,omitempty"`
@@ -24,7 +24,7 @@ type NetworkObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
-type NetworkParameters struct {
+type CivoNetworkParameters struct {
 
 	// Name for the network
 	// +kubebuilder:validation:Required
@@ -35,51 +35,51 @@ type NetworkParameters struct {
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
-// NetworkSpec defines the desired state of Network
-type NetworkSpec struct {
+// CivoNetworkSpec defines the desired state of CivoNetwork
+type CivoNetworkSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     NetworkParameters `json:"forProvider"`
+	ForProvider     CivoNetworkParameters `json:"forProvider"`
 }
 
-// NetworkStatus defines the observed state of Network.
-type NetworkStatus struct {
+// CivoNetworkStatus defines the observed state of CivoNetwork.
+type CivoNetworkStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        NetworkObservation `json:"atProvider,omitempty"`
+	AtProvider        CivoNetworkObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Network is the Schema for the Networks API. <no value>
+// CivoNetwork is the Schema for the CivoNetworks API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,civo}
-type Network struct {
+type CivoNetwork struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              NetworkSpec   `json:"spec"`
-	Status            NetworkStatus `json:"status,omitempty"`
+	Spec              CivoNetworkSpec   `json:"spec"`
+	Status            CivoNetworkStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// NetworkList contains a list of Networks
-type NetworkList struct {
+// CivoNetworkList contains a list of CivoNetworks
+type CivoNetworkList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Network `json:"items"`
+	Items           []CivoNetwork `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Network_Kind             = "Network"
-	Network_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Network_Kind}.String()
-	Network_KindAPIVersion   = Network_Kind + "." + CRDGroupVersion.String()
-	Network_GroupVersionKind = CRDGroupVersion.WithKind(Network_Kind)
+	CivoNetwork_Kind             = "CivoNetwork"
+	CivoNetwork_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: CivoNetwork_Kind}.String()
+	CivoNetwork_KindAPIVersion   = CivoNetwork_Kind + "." + CRDGroupVersion.String()
+	CivoNetwork_GroupVersionKind = CRDGroupVersion.WithKind(CivoNetwork_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Network{}, &NetworkList{})
+	SchemeBuilder.Register(&CivoNetwork{}, &CivoNetworkList{})
 }

@@ -1,5 +1,5 @@
 apiVersion: civo.upbound.io/v1alpha1
-kind: Network
+kind: CivoNetwork
 metadata:
   name: tf-net
 spec:

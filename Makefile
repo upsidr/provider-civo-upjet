@@ -125,6 +125,10 @@ pull-docs:
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
+generate.clean:
+	bash -c "find . -iname 'zz_*' ! -iname 'zz_generated.managed*.go' -delete"
+	bash -c "find ./internal/controller -iname 'zz_*' -delete"
+
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # ====================================================================================
 # Targets
