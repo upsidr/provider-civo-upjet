@@ -52,6 +52,7 @@ KIND_VERSION = v0.15.0
 UP_VERSION = v0.14.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
+UP_ACCOUNT = vladfr
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -78,6 +79,9 @@ xpkg.build.provider-civo-upjet: do.build.images
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
 build.init: $(UP)
+
+up.login:
+	@$(UP) login -t $(UP_TOKEN) -a $(UP_ACCOUNT)
 
 # ====================================================================================
 # Fallthrough
