@@ -81,7 +81,7 @@ xpkg.build.provider-civo-upjet: do.build.images
 build.init: $(UP)
 
 up.login:
-	@$(UP) login -t $(UP_TOKEN) -a $(UP_ACCOUNT)
+	@$(UP) login --account="$(UP_ACCOUNT)" --token="$(UP_TOKEN)"
 
 # ====================================================================================
 # Fallthrough
