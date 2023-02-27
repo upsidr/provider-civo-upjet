@@ -9,9 +9,9 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	firewall "github.com/upsidr/provider-civo-upjet/internal/controller/civo/firewall"
-	kubernetescluster "github.com/upsidr/provider-civo-upjet/internal/controller/civo/kubernetescluster"
-	network "github.com/upsidr/provider-civo-upjet/internal/controller/civo/network"
+	civofirewall "github.com/upsidr/provider-civo-upjet/internal/controller/civo/civofirewall"
+	civokubernetescluster "github.com/upsidr/provider-civo-upjet/internal/controller/civo/civokubernetescluster"
+	civonetwork "github.com/upsidr/provider-civo-upjet/internal/controller/civo/civonetwork"
 	providerconfig "github.com/upsidr/provider-civo-upjet/internal/controller/providerconfig"
 )
 
@@ -19,9 +19,9 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		firewall.Setup,
-		kubernetescluster.Setup,
-		network.Setup,
+		civofirewall.Setup,
+		civokubernetescluster.Setup,
+		civonetwork.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

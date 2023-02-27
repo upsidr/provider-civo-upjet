@@ -7,200 +7,200 @@ package v1alpha1
 
 import xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 
-// GetCondition of this Firewall.
-func (mg *Firewall) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this CivoFirewall.
+func (mg *CivoFirewall) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this Firewall.
-func (mg *Firewall) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this CivoFirewall.
+func (mg *CivoFirewall) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this Firewall.
-func (mg *Firewall) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this CivoFirewall.
+func (mg *CivoFirewall) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this Firewall.
+GetProviderReference of this CivoFirewall.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *Firewall) GetProviderReference() *xpv1.Reference {
+func (mg *CivoFirewall) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetPublishConnectionDetailsTo of this Firewall.
-func (mg *Firewall) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this CivoFirewall.
+func (mg *CivoFirewall) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this Firewall.
-func (mg *Firewall) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this CivoFirewall.
+func (mg *CivoFirewall) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this Firewall.
-func (mg *Firewall) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this CivoFirewall.
+func (mg *CivoFirewall) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this Firewall.
-func (mg *Firewall) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this CivoFirewall.
+func (mg *CivoFirewall) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this Firewall.
-func (mg *Firewall) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this CivoFirewall.
+func (mg *CivoFirewall) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this Firewall.
+SetProviderReference of this CivoFirewall.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *Firewall) SetProviderReference(r *xpv1.Reference) {
+func (mg *CivoFirewall) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetPublishConnectionDetailsTo of this Firewall.
-func (mg *Firewall) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this CivoFirewall.
+func (mg *CivoFirewall) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this Firewall.
-func (mg *Firewall) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this CivoFirewall.
+func (mg *CivoFirewall) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this KubernetesCluster.
-func (mg *KubernetesCluster) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this KubernetesCluster.
-func (mg *KubernetesCluster) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this KubernetesCluster.
-func (mg *KubernetesCluster) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this KubernetesCluster.
+GetProviderReference of this CivoKubernetesCluster.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *KubernetesCluster) GetProviderReference() *xpv1.Reference {
+func (mg *CivoKubernetesCluster) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetPublishConnectionDetailsTo of this KubernetesCluster.
-func (mg *KubernetesCluster) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this KubernetesCluster.
-func (mg *KubernetesCluster) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this KubernetesCluster.
-func (mg *KubernetesCluster) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this KubernetesCluster.
-func (mg *KubernetesCluster) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this KubernetesCluster.
-func (mg *KubernetesCluster) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this KubernetesCluster.
+SetProviderReference of this CivoKubernetesCluster.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *KubernetesCluster) SetProviderReference(r *xpv1.Reference) {
+func (mg *CivoKubernetesCluster) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetPublishConnectionDetailsTo of this KubernetesCluster.
-func (mg *KubernetesCluster) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this KubernetesCluster.
-func (mg *KubernetesCluster) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this Network.
-func (mg *Network) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this CivoNetwork.
+func (mg *CivoNetwork) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this Network.
-func (mg *Network) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this CivoNetwork.
+func (mg *CivoNetwork) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this Network.
-func (mg *Network) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this CivoNetwork.
+func (mg *CivoNetwork) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this Network.
+GetProviderReference of this CivoNetwork.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *Network) GetProviderReference() *xpv1.Reference {
+func (mg *CivoNetwork) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetPublishConnectionDetailsTo of this Network.
-func (mg *Network) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this CivoNetwork.
+func (mg *CivoNetwork) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this Network.
-func (mg *Network) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this CivoNetwork.
+func (mg *CivoNetwork) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this Network.
-func (mg *Network) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this CivoNetwork.
+func (mg *CivoNetwork) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this Network.
-func (mg *Network) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this CivoNetwork.
+func (mg *CivoNetwork) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this Network.
-func (mg *Network) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this CivoNetwork.
+func (mg *CivoNetwork) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this Network.
+SetProviderReference of this CivoNetwork.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *Network) SetProviderReference(r *xpv1.Reference) {
+func (mg *CivoNetwork) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetPublishConnectionDetailsTo of this Network.
-func (mg *Network) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this CivoNetwork.
+func (mg *CivoNetwork) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this Network.
-func (mg *Network) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this CivoNetwork.
+func (mg *CivoNetwork) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

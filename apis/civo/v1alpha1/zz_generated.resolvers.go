@@ -12,8 +12,8 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this Firewall.
-func (mg *Firewall) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this CivoFirewall.
+func (mg *CivoFirewall) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -25,8 +25,8 @@ func (mg *Firewall) ResolveReferences(ctx context.Context, c client.Reader) erro
 		Reference:    mg.Spec.ForProvider.NetworkIDRef,
 		Selector:     mg.Spec.ForProvider.NetworkIDSelector,
 		To: reference.To{
-			List:    &NetworkList{},
-			Managed: &Network{},
+			List:    &CivoNetworkList{},
+			Managed: &CivoNetwork{},
 		},
 	})
 	if err != nil {
@@ -38,8 +38,8 @@ func (mg *Firewall) ResolveReferences(ctx context.Context, c client.Reader) erro
 	return nil
 }
 
-// ResolveReferences of this KubernetesCluster.
-func (mg *KubernetesCluster) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this CivoKubernetesCluster.
+func (mg *CivoKubernetesCluster) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -51,8 +51,8 @@ func (mg *KubernetesCluster) ResolveReferences(ctx context.Context, c client.Rea
 		Reference:    mg.Spec.ForProvider.FirewallIDRef,
 		Selector:     mg.Spec.ForProvider.FirewallIDSelector,
 		To: reference.To{
-			List:    &FirewallList{},
-			Managed: &Firewall{},
+			List:    &CivoFirewallList{},
+			Managed: &CivoFirewall{},
 		},
 	})
 	if err != nil {
@@ -67,8 +67,8 @@ func (mg *KubernetesCluster) ResolveReferences(ctx context.Context, c client.Rea
 		Reference:    mg.Spec.ForProvider.NetworkIDRef,
 		Selector:     mg.Spec.ForProvider.NetworkIDSelector,
 		To: reference.To{
-			List:    &NetworkList{},
-			Managed: &Network{},
+			List:    &CivoNetworkList{},
+			Managed: &CivoNetwork{},
 		},
 	})
 	if err != nil {

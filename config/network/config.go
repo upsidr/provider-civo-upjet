@@ -6,6 +6,6 @@ import "github.com/upbound/upjet/pkg/config"
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("civo_network", func(r *config.Resource) {
 		r.ShortGroup = ""
-		r.Kind = "Network"
+		r.Kind = "CivoNetwork"
 	})
 }

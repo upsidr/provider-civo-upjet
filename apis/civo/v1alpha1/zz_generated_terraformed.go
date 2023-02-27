@@ -13,18 +13,18 @@ import (
 	"github.com/upbound/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this Firewall
-func (mg *Firewall) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this CivoFirewall
+func (mg *CivoFirewall) GetTerraformResourceType() string {
 	return "civo_firewall"
 }
 
-// GetConnectionDetailsMapping for this Firewall
-func (tr *Firewall) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this CivoFirewall
+func (tr *CivoFirewall) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this Firewall
-func (tr *Firewall) GetObservation() (map[string]any, error) {
+// GetObservation of this CivoFirewall
+func (tr *CivoFirewall) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -33,8 +33,8 @@ func (tr *Firewall) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this Firewall
-func (tr *Firewall) SetObservation(obs map[string]any) error {
+// SetObservation for this CivoFirewall
+func (tr *CivoFirewall) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -42,16 +42,16 @@ func (tr *Firewall) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this Firewall
-func (tr *Firewall) GetID() string {
+// GetID returns ID of underlying Terraform resource of this CivoFirewall
+func (tr *CivoFirewall) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this Firewall
-func (tr *Firewall) GetParameters() (map[string]any, error) {
+// GetParameters of this CivoFirewall
+func (tr *CivoFirewall) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func (tr *Firewall) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this Firewall
-func (tr *Firewall) SetParameters(params map[string]any) error {
+// SetParameters for this CivoFirewall
+func (tr *CivoFirewall) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -69,10 +69,10 @@ func (tr *Firewall) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// LateInitialize this Firewall using its observed tfState.
+// LateInitialize this CivoFirewall using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *Firewall) LateInitialize(attrs []byte) (bool, error) {
-	params := &FirewallParameters{}
+func (tr *CivoFirewall) LateInitialize(attrs []byte) (bool, error) {
+	params := &CivoFirewallParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -83,22 +83,22 @@ func (tr *Firewall) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *Firewall) GetTerraformSchemaVersion() int {
+func (tr *CivoFirewall) GetTerraformSchemaVersion() int {
 	return 0
 }
 
-// GetTerraformResourceType returns Terraform resource type for this KubernetesCluster
-func (mg *KubernetesCluster) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this CivoKubernetesCluster
+func (mg *CivoKubernetesCluster) GetTerraformResourceType() string {
 	return "civo_kubernetes_cluster"
 }
 
-// GetConnectionDetailsMapping for this KubernetesCluster
-func (tr *KubernetesCluster) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this CivoKubernetesCluster
+func (tr *CivoKubernetesCluster) GetConnectionDetailsMapping() map[string]string {
 	return map[string]string{"kubeconfig": "status.atProvider.kubeconfig"}
 }
 
-// GetObservation of this KubernetesCluster
-func (tr *KubernetesCluster) GetObservation() (map[string]any, error) {
+// GetObservation of this CivoKubernetesCluster
+func (tr *CivoKubernetesCluster) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -107,8 +107,8 @@ func (tr *KubernetesCluster) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this KubernetesCluster
-func (tr *KubernetesCluster) SetObservation(obs map[string]any) error {
+// SetObservation for this CivoKubernetesCluster
+func (tr *CivoKubernetesCluster) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -116,16 +116,16 @@ func (tr *KubernetesCluster) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this KubernetesCluster
-func (tr *KubernetesCluster) GetID() string {
+// GetID returns ID of underlying Terraform resource of this CivoKubernetesCluster
+func (tr *CivoKubernetesCluster) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this KubernetesCluster
-func (tr *KubernetesCluster) GetParameters() (map[string]any, error) {
+// GetParameters of this CivoKubernetesCluster
+func (tr *CivoKubernetesCluster) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -134,8 +134,8 @@ func (tr *KubernetesCluster) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this KubernetesCluster
-func (tr *KubernetesCluster) SetParameters(params map[string]any) error {
+// SetParameters for this CivoKubernetesCluster
+func (tr *CivoKubernetesCluster) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -143,10 +143,10 @@ func (tr *KubernetesCluster) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// LateInitialize this KubernetesCluster using its observed tfState.
+// LateInitialize this CivoKubernetesCluster using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *KubernetesCluster) LateInitialize(attrs []byte) (bool, error) {
-	params := &KubernetesClusterParameters{}
+func (tr *CivoKubernetesCluster) LateInitialize(attrs []byte) (bool, error) {
+	params := &CivoKubernetesClusterParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -157,22 +157,22 @@ func (tr *KubernetesCluster) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *KubernetesCluster) GetTerraformSchemaVersion() int {
+func (tr *CivoKubernetesCluster) GetTerraformSchemaVersion() int {
 	return 0
 }
 
-// GetTerraformResourceType returns Terraform resource type for this Network
-func (mg *Network) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this CivoNetwork
+func (mg *CivoNetwork) GetTerraformResourceType() string {
 	return "civo_network"
 }
 
-// GetConnectionDetailsMapping for this Network
-func (tr *Network) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this CivoNetwork
+func (tr *CivoNetwork) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this Network
-func (tr *Network) GetObservation() (map[string]any, error) {
+// GetObservation of this CivoNetwork
+func (tr *CivoNetwork) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -181,8 +181,8 @@ func (tr *Network) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this Network
-func (tr *Network) SetObservation(obs map[string]any) error {
+// SetObservation for this CivoNetwork
+func (tr *CivoNetwork) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -190,16 +190,16 @@ func (tr *Network) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this Network
-func (tr *Network) GetID() string {
+// GetID returns ID of underlying Terraform resource of this CivoNetwork
+func (tr *CivoNetwork) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this Network
-func (tr *Network) GetParameters() (map[string]any, error) {
+// GetParameters of this CivoNetwork
+func (tr *CivoNetwork) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -208,8 +208,8 @@ func (tr *Network) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this Network
-func (tr *Network) SetParameters(params map[string]any) error {
+// SetParameters for this CivoNetwork
+func (tr *CivoNetwork) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -217,10 +217,10 @@ func (tr *Network) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// LateInitialize this Network using its observed tfState.
+// LateInitialize this CivoNetwork using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *Network) LateInitialize(attrs []byte) (bool, error) {
-	params := &NetworkParameters{}
+func (tr *CivoNetwork) LateInitialize(attrs []byte) (bool, error) {
+	params := &CivoNetworkParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -231,6 +231,6 @@ func (tr *Network) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *Network) GetTerraformSchemaVersion() int {
+func (tr *CivoNetwork) GetTerraformSchemaVersion() int {
 	return 0
 }

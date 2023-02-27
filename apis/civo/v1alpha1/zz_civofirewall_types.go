@@ -13,6 +13,55 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CivoFirewallObservation struct {
+
+	// The egress rules, this is a list of rules that will be applied to the firewall
+	// +kubebuilder:validation:Optional
+	EgressRule []EgressRuleObservation `json:"egressRule,omitempty" tf:"egress_rule,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ingress rules, this is a list of rules that will be applied to the firewall
+	// +kubebuilder:validation:Optional
+	IngressRule []IngressRuleObservation `json:"ingressRule,omitempty" tf:"ingress_rule,omitempty"`
+}
+
+type CivoFirewallParameters struct {
+
+	// The create rules flag is used to create the default firewall rules, if is not defined will be set to true, and if you set to false you need to define at least one ingress or egress rule
+	// +kubebuilder:validation:Optional
+	CreateDefaultRules *bool `json:"createDefaultRules,omitempty" tf:"create_default_rules,omitempty"`
+
+	// The egress rules, this is a list of rules that will be applied to the firewall
+	// +kubebuilder:validation:Optional
+	EgressRule []EgressRuleParameters `json:"egressRule,omitempty" tf:"egress_rule,omitempty"`
+
+	// The ingress rules, this is a list of rules that will be applied to the firewall
+	// +kubebuilder:validation:Optional
+	IngressRule []IngressRuleParameters `json:"ingressRule,omitempty" tf:"ingress_rule,omitempty"`
+
+	// The firewall name
+	// +kubebuilder:validation:Required
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// The firewall network, if is not defined we use the default network
+	// +crossplane:generate:reference:type=github.com/upsidr/provider-civo-upjet/apis/civo/v1alpha1.CivoNetwork
+	// +kubebuilder:validation:Optional
+	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// Reference to a CivoNetwork in civo to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDRef *v1.Reference `json:"networkIdRef,omitempty" tf:"-"`
+
+	// Selector for a CivoNetwork in civo to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDSelector *v1.Selector `json:"networkIdSelector,omitempty" tf:"-"`
+
+	// The firewall region, if is not defined we use the global defined in the provider
+	// +kubebuilder:validation:Optional
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type EgressRuleObservation struct {
 
 	// The ID of the firewall rule.
@@ -40,55 +89,6 @@ type EgressRuleParameters struct {
 	// The protocol choice from `tcp`, `udp` or `icmp` (the default if unspecified is `tcp`)
 	// +kubebuilder:validation:Optional
 	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
-}
-
-type FirewallObservation struct {
-
-	// The egress rules, this is a list of rules that will be applied to the firewall
-	// +kubebuilder:validation:Optional
-	EgressRule []EgressRuleObservation `json:"egressRule,omitempty" tf:"egress_rule,omitempty"`
-
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// The ingress rules, this is a list of rules that will be applied to the firewall
-	// +kubebuilder:validation:Optional
-	IngressRule []IngressRuleObservation `json:"ingressRule,omitempty" tf:"ingress_rule,omitempty"`
-}
-
-type FirewallParameters struct {
-
-	// The create rules flag is used to create the default firewall rules, if is not defined will be set to true, and if you set to false you need to define at least one ingress or egress rule
-	// +kubebuilder:validation:Optional
-	CreateDefaultRules *bool `json:"createDefaultRules,omitempty" tf:"create_default_rules,omitempty"`
-
-	// The egress rules, this is a list of rules that will be applied to the firewall
-	// +kubebuilder:validation:Optional
-	EgressRule []EgressRuleParameters `json:"egressRule,omitempty" tf:"egress_rule,omitempty"`
-
-	// The ingress rules, this is a list of rules that will be applied to the firewall
-	// +kubebuilder:validation:Optional
-	IngressRule []IngressRuleParameters `json:"ingressRule,omitempty" tf:"ingress_rule,omitempty"`
-
-	// The firewall name
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
-
-	// The firewall network, if is not defined we use the default network
-	// +crossplane:generate:reference:type=github.com/upsidr/provider-civo-upjet/apis/civo/v1alpha1.Network
-	// +kubebuilder:validation:Optional
-	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
-
-	// Reference to a Network in civo to populate networkId.
-	// +kubebuilder:validation:Optional
-	NetworkIDRef *v1.Reference `json:"networkIdRef,omitempty" tf:"-"`
-
-	// Selector for a Network in civo to populate networkId.
-	// +kubebuilder:validation:Optional
-	NetworkIDSelector *v1.Selector `json:"networkIdSelector,omitempty" tf:"-"`
-
-	// The firewall region, if is not defined we use the global defined in the provider
-	// +kubebuilder:validation:Optional
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type IngressRuleObservation struct {
@@ -120,51 +120,51 @@ type IngressRuleParameters struct {
 	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
 }
 
-// FirewallSpec defines the desired state of Firewall
-type FirewallSpec struct {
+// CivoFirewallSpec defines the desired state of CivoFirewall
+type CivoFirewallSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     FirewallParameters `json:"forProvider"`
+	ForProvider     CivoFirewallParameters `json:"forProvider"`
 }
 
-// FirewallStatus defines the observed state of Firewall.
-type FirewallStatus struct {
+// CivoFirewallStatus defines the observed state of CivoFirewall.
+type CivoFirewallStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        FirewallObservation `json:"atProvider,omitempty"`
+	AtProvider        CivoFirewallObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Firewall is the Schema for the Firewalls API. <no value>
+// CivoFirewall is the Schema for the CivoFirewalls API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,civo}
-type Firewall struct {
+type CivoFirewall struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              FirewallSpec   `json:"spec"`
-	Status            FirewallStatus `json:"status,omitempty"`
+	Spec              CivoFirewallSpec   `json:"spec"`
+	Status            CivoFirewallStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// FirewallList contains a list of Firewalls
-type FirewallList struct {
+// CivoFirewallList contains a list of CivoFirewalls
+type CivoFirewallList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Firewall `json:"items"`
+	Items           []CivoFirewall `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Firewall_Kind             = "Firewall"
-	Firewall_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Firewall_Kind}.String()
-	Firewall_KindAPIVersion   = Firewall_Kind + "." + CRDGroupVersion.String()
-	Firewall_GroupVersionKind = CRDGroupVersion.WithKind(Firewall_Kind)
+	CivoFirewall_Kind             = "CivoFirewall"
+	CivoFirewall_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: CivoFirewall_Kind}.String()
+	CivoFirewall_KindAPIVersion   = CivoFirewall_Kind + "." + CRDGroupVersion.String()
+	CivoFirewall_GroupVersionKind = CRDGroupVersion.WithKind(CivoFirewall_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Firewall{}, &FirewallList{})
+	SchemeBuilder.Register(&CivoFirewall{}, &CivoFirewallList{})
 }
