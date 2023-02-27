@@ -285,5 +285,11 @@ jobs:
           name: output
           path: _output/**
 
+      - name: Login
+        env:
+          UP_ACCOUNT: ${{ secrets.UPBOUND_ACCOUNT }}
+          UP_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
+        run: make up.login
+
       - name: Publish Artifacts
         run: make publish BRANCH_NAME=${GITHUB_REF##*/}
