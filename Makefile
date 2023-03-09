@@ -52,7 +52,7 @@ KIND_VERSION = v0.15.0
 UP_VERSION = v0.14.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
-UP_ACCOUNT = vladfr
+UP_ACCOUNT = upsidr
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -65,7 +65,7 @@ IMAGES = $(PROJECT_NAME)
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= xpkg.upbound.io/vladfr
+XPKG_REG_ORGS ?= xpkg.upbound.io/upsidr
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/upbound
@@ -79,9 +79,6 @@ xpkg.build.provider-civo-upjet: do.build.images
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
 build.init: $(UP)
-
-up.login:
-	@$(UP) login --account="$(UP_ACCOUNT)" --token="$(UP_TOKEN)"
 
 # ====================================================================================
 # Fallthrough
