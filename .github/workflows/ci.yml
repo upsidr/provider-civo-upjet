@@ -10,9 +10,9 @@ on:
 
 env:
   # Common versions
-  GO_VERSION: '1.19'
-  GOLANGCI_VERSION: 'v1.50.0'
-  DOCKER_BUILDX_VERSION: 'v0.8.2'
+  GO_VERSION: "1.19"
+  GOLANGCI_VERSION: "v1.50.0"
+  DOCKER_BUILDX_VERSION: "v0.8.2"
 
   # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
   # step 'if env.XXX != ""', so we copy these to succinctly test whether
@@ -32,7 +32,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           paths_ignore: '["**.md", "**.png", "**.jpg"]'
           do_not_skip: '["workflow_dispatch", "schedule", "push"]'
-
 
   lint:
     runs-on: ubuntu-22.04
@@ -284,12 +283,6 @@ jobs:
         with:
           name: output
           path: _output/**
-
-      - name: Login
-        env:
-          UP_ACCOUNT: ${{ secrets.UPBOUND_ACCOUNT }}
-          UP_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
-        run: make up.login
 
       - name: Publish Artifacts
         run: make publish BRANCH_NAME=${GITHUB_REF##*/}
